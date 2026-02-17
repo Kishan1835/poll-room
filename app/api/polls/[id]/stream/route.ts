@@ -10,7 +10,7 @@ export async function GET(
 ) {
     const { id: pollId } = await params
 
-    // Verify poll exists
+    // Verify if poll exists
     const poll = await prisma.poll.findUnique({
         where: { id: pollId },
         select: { id: true },
@@ -20,7 +20,7 @@ export async function GET(
         return new Response('Poll not found', { status: 404 })
     }
 
-    // Create a readable stream for SSE
+    // Createreadable stream for SSE
     const stream = new ReadableStream({
         start(controller) {
             // Add this connection to the pool
@@ -29,7 +29,7 @@ export async function GET(
             }
             connections.get(pollId)!.add(controller)
 
-            // Send initial connection message
+            // Send initial connection mess
             const data = `data: ${JSON.stringify({ type: 'connected' })}\n\n`
             controller.enqueue(new TextEncoder().encode(data))
 
@@ -58,7 +58,7 @@ export async function GET(
                 try {
                     controller.close()
                 } catch (e) {
-                    // Already closed
+                    // if already closed
                 }
             })
         },
@@ -109,7 +109,7 @@ async function sendPollUpdate(
     }
 }
 
-// Function to broadcast updates to all connected clients
+// broadcasting updates to all connected clients
 export async function broadcastPollUpdate(pollId: string) {
     const pollConnections = connections.get(pollId)
     if (!pollConnections || pollConnections.size === 0) return

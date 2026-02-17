@@ -3,8 +3,8 @@ import prisma from '@/lib/prisma'
 import { broadcastPollUpdate } from '../stream/route'
 
 /**
- * ANTI-ABUSE MECHANISM #1: Fingerprint-based voting prevention
- * ANTI-ABUSE MECHANISM #2: IP-based rate limiting
+ * ANTI-ABUSE MECHANISM 1: Fingerprint-based voting prevention
+ * ANTI-ABUSE MECHANISM 2: IP-based rate limiting
  */
 
 export async function POST(
@@ -16,7 +16,7 @@ export async function POST(
         const body = await request.json()
         const { optionIndex, fingerprint } = body
 
-        // Validation
+        // Validating
         if (typeof optionIndex !== 'number' || optionIndex < 0) {
             return NextResponse.json(
                 { error: 'Invalid option index' },
